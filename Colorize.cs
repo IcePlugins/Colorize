@@ -25,8 +25,8 @@ namespace ExtraConcentratedJuice.Colorize
             {
                 Rocket.Core.Logging.Logger.Log(c);
             }
-            Rocket.Core.Logging.Logger.Log("Enable Blacklist Bypass w/ Permission:" + Configuration.Instance.enable_bypass_permission);
-            Rocket.Core.Logging.Logger.Log("Reminder that the bypass permission is  colorizer.bypass");
+            Rocket.Core.Logging.Logger.Log("> Enable Blacklist Bypass w/ Permission:" + Configuration.Instance.enable_bypass_permission);
+            Rocket.Core.Logging.Logger.Log("   Reminder that the bypass permission is  colorizer.bypass");
 
             playerColors = new Dictionary<string, Color>();
             UnturnedPlayerEvents.OnPlayerChatted += OnChat;
