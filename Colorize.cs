@@ -46,46 +46,7 @@ namespace ExtraConcentratedJuice.Colorize
 
             if (playerColors.TryGetValue(player.Id, out Color playerColor) && player.HasPermission("colorize"))
             {
-                cancel = true;
-                SteamPlayer steamPlayer = PlayerTool.getSteamPlayer(player.CSteamID);
-
-                if (chatMode == EChatMode.GLOBAL)
-                {
-                    ChatManager.instance.channel.send("tellChat", ESteamCall.OTHERS, ESteamPacket.UPDATE_RELIABLE_BUFFER, new object[]
-                {
-                            player.CSteamID,
-                            (byte)chatMode,
-                            playerColor,
-                            msg
-                });
-                }
-                else if (chatMode == EChatMode.LOCAL)
-                {
-                    ChatManager.instance.channel.send("tellChat", ESteamCall.OTHERS, steamPlayer.player.transform.position, EffectManager.MEDIUM, ESteamPacket.UPDATE_RELIABLE_BUFFER, new object[]
-                            {
-                            player.CSteamID,
-                            (byte)chatMode,
-                            playerColor,
-                            msg
-                            });
-                }
-                else if (chatMode == EChatMode.GROUP && player.SteamGroupID != CSteamID.Nil)
-                {
-                    for (int i = 0; i < Provider.clients.Count; i++)
-                    {
-                        SteamPlayer otherPlayer = Provider.clients[i];
-                        if (otherPlayer != null && player.SteamGroupID == UnturnedPlayer.FromSteamPlayer(otherPlayer).SteamGroupID)
-                        {
-                            ChatManager.instance.channel.send("tellChat", otherPlayer.playerID.steamID, ESteamPacket.UPDATE_RELIABLE_BUFFER, new object[]
-                            {
-                                    player.CSteamID,
-                                    (byte)chatMode,
-                                    playerColor,
-                                    msg
-                            });
-                        }
-                    }
-                }
+                color = playerColor;
             }
         }
         public override TranslationList DefaultTranslations
