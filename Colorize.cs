@@ -14,6 +14,7 @@ namespace ExtraConcentratedJuice.Colorize
     {
         public Dictionary<string, Color> playerColors;
         public static Colorize instance;
+
         protected override void Load()
         {
             instance = this;
