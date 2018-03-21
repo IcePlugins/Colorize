@@ -9,11 +9,12 @@ namespace ExtraConcentratedJuice.Colorize
     {
         [XmlArrayItem(ElementName = "color")]
         public List<string> banned_colors;
+
         public Boolean enable_bypass_permission;
 
         public void LoadDefaults()
         {
-            banned_colors = new List<string>() { "#FFFFFF", "#FFF000" };
+            banned_colors = new List<string> { "#FFFFFF", "#FFF000" };
             enable_bypass_permission = true;
         }
     }

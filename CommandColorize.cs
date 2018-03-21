@@ -1,13 +1,7 @@
 ﻿using Rocket.API;
-using Rocket.API.Serialisation;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
-using SDG.Unturned;
-using Steamworks;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ExtraConcentratedJuice.Colorize
@@ -24,7 +18,7 @@ namespace ExtraConcentratedJuice.Colorize
 
         public List<string> Aliases => new List<string> { "setcolor" };
 
-        public List<string> Permissions => new List<string>() { "colorize" };
+        public List<string> Permissions => new List<string> { "colorize" };
 
         public void Execute(IRocketPlayer caller, string[] args)
         {
@@ -36,7 +30,6 @@ namespace ExtraConcentratedJuice.Colorize
             }
             if (uPlayer.HasPermission("colorize." + args[0]) || uPlayer.HasPermission("colorize.#" + args[0]) || uPlayer.HasPermission("colorize.*"))
             {
-
                 if (args[0].StartsWith("#"))
                 {
                     Color color = (Color)UnturnedChat.GetColorFromHex(args[0]);
@@ -45,7 +38,7 @@ namespace ExtraConcentratedJuice.Colorize
                         UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_invalid_color"), UnityEngine.Color.red);
                         return;
                     }
-                    if (IsBlacklistedColor(color, uPlayer))
+                    if (IsBlacklistedColor(color))
                     {
                         if (!uPlayer.HasPermission("colorizer.bypass") && !Colorize.instance.Configuration.Instance.enable_bypass_permission)
                         {
@@ -55,24 +48,20 @@ namespace ExtraConcentratedJuice.Colorize
                     }
                     Colorize.instance.playerColors[uPlayer.Id] = color;
                     UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_success", ColorUtility.ToHtmlStringRGB(color)), UnityEngine.Color.green);
-
                 }
                 else
                 {
-                    Color color = (Color)UnturnedChat.GetColorFromName(args[0], UnityEngine.Color.clear);
-                    if (IsBlacklistedColor(color, uPlayer))
+                    Color color = UnturnedChat.GetColorFromName(args[0], Color.clear);
+                    if (IsBlacklistedColor(color))
                     {
-                        if(!uPlayer.HasPermission("colorizer.bypass") && !Colorize.instance.Configuration.Instance.enable_bypass_permission)
+                        if (!uPlayer.HasPermission("colorizer.bypass") && !Colorize.instance.Configuration.Instance.enable_bypass_permission)
                         {
                             UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_blacklisted", ColorUtility.ToHtmlStringRGB(color)), UnityEngine.Color.red);
                             return;
                         }
-
                     }
                     Colorize.instance.playerColors[uPlayer.Id] = color;
                     UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_success", ColorUtility.ToHtmlStringRGB(color)), UnityEngine.Color.green);
-
-
                 }
             }
             else
@@ -81,7 +70,7 @@ namespace ExtraConcentratedJuice.Colorize
             }
         }
 
-        public static bool IsBlacklistedColor(Color color, UnturnedPlayer player)
+        public static bool IsBlacklistedColor(Color color)
         {
             foreach (string c in Colorize.instance.Configuration.Instance.banned_colors)
             {
@@ -94,4 +83,3 @@ namespace ExtraConcentratedJuice.Colorize
         }
     }
 }
-

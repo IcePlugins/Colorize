@@ -1,19 +1,13 @@
 ﻿using Rocket.API;
-using Rocket.API.Serialisation;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
-using SDG.Unturned;
-using Steamworks;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ExtraConcentratedJuice.Colorize
 {
     public class CommandRemoveColor : IRocketCommand
-    {   
+    {
         public AllowedCaller AllowedCaller => AllowedCaller.Player;
 
         public string Name => "removecolor";
@@ -41,4 +35,3 @@ namespace ExtraConcentratedJuice.Colorize
         }
     }
 }
-
