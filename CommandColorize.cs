@@ -25,43 +25,50 @@ namespace ExtraConcentratedJuice.Colorize
             UnturnedPlayer uPlayer = (UnturnedPlayer)caller;
             if (args.Length != 1)
             {
-                UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_invalid_args"), UnityEngine.Color.red);
+                UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_invalid_args"), Color.red);
                 return;
             }
             if (uPlayer.HasPermission("colorize." + args[0]) || uPlayer.HasPermission("colorize.#" + args[0]) || uPlayer.HasPermission("colorize.*"))
             {
                 if (args[0].StartsWith("#"))
                 {
-                    Color color = (Color)UnturnedChat.GetColorFromHex(args[0]);
-                    if (color == null)
+                    Color? color = UnturnedChat.GetColorFromHex(args[0]);
+                    if (!color.HasValue)
                     {
-                        UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_invalid_color"), UnityEngine.Color.red);
+                        UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_invalid_color"), Color.red);
                         return;
                     }
-                    if (IsBlacklistedColor(color))
+                    if (IsBlacklistedColor(color.Value))
                     {
                         if (!uPlayer.HasPermission("colorizer.bypass") && !Colorize.instance.Configuration.Instance.enable_bypass_permission)
                         {
-                            UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_blacklisted", ColorUtility.ToHtmlStringRGB(color)), UnityEngine.Color.red);
+                            UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_blacklisted", ColorUtility.ToHtmlStringRGB(color.Value)), Color.red);
                             return;
                         }
                     }
-                    Colorize.instance.playerColors[uPlayer.Id] = color;
-                    UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_success", ColorUtility.ToHtmlStringRGB(color)), UnityEngine.Color.green);
+                    Colorize.instance.playerColors[uPlayer.Id] = color.Value;
+                    UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_success", ColorUtility.ToHtmlStringRGB(color.Value)), Color.green);
                 }
                 else
                 {
-                    Color color = UnturnedChat.GetColorFromName(args[0], Color.clear);
+                    Color color = UnturnedChat.GetColorFromName(args[0], default(Color));
+
+                    if (color == default(Color) && args[0] != "000000")
+                    {
+                        UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_invalid_color"), Color.red);
+                        return;
+                    }
+
                     if (IsBlacklistedColor(color))
                     {
                         if (!uPlayer.HasPermission("colorizer.bypass") && !Colorize.instance.Configuration.Instance.enable_bypass_permission)
                         {
-                            UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_blacklisted", ColorUtility.ToHtmlStringRGB(color)), UnityEngine.Color.red);
+                            UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_blacklisted", ColorUtility.ToHtmlStringRGB(color)), Color.red);
                             return;
                         }
                     }
                     Colorize.instance.playerColors[uPlayer.Id] = color;
-                    UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_success", ColorUtility.ToHtmlStringRGB(color)), UnityEngine.Color.green);
+                    UnturnedChat.Say(uPlayer, Colorize.instance.Translations.Instance.Translate("colorize_success", ColorUtility.ToHtmlStringRGB(color)), Color.green);
                 }
             }
             else

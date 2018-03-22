@@ -18,7 +18,7 @@ namespace ExtraConcentratedJuice.Colorize
 
         public List<string> Aliases => new List<string> { "resetcolor" };
 
-        public List<string> Permissions => new List<string>() { "colorize.remove" };
+        public List<string> Permissions => new List<string> { "colorize.remove" };
 
         public void Execute(IRocketPlayer caller, string[] args)
         {
